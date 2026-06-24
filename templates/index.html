@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ECDSA PDF Signature</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <main class="landing">
+        <header class="hero">
+            <span class="badge">Secure PDF Signature · ECDSA</span>
+            <h1>Amankan Dokumen PDF dengan Tanda Tangan Digital ECDSA</h1>
+            <p class="hero-subtitle">
+                Solusi modern untuk menjaga keaslian dan integritas dokumen.
+                Jika isi PDF diubah sedikit saja, hasil verifikasi langsung terdeteksi <strong>INVALID</strong>.
+            </p>
+
+            <div class="hero-cta">
+                <a href="#tools" class="btn cta">Mulai Sekarang</a>
+                <a href="#about-ecdsa" class="btn ghost">Pelajari ECDSA</a>
+            </div>
+        </header>
+
+        <section id="about-ecdsa" class="info-card">
+            <h3>Apa itu ECDSA?</h3>
+            <p>
+                <strong>ECDSA (Elliptic Curve Digital Signature Algorithm)</strong> adalah metode kriptografi untuk
+                memastikan <strong>keaslian</strong>, <strong>integritas</strong>, dan <strong>non-repudiation</strong>
+                dokumen digital. Dokumen ditandatangani menggunakan private key dan diverifikasi menggunakan public key.
+            </p>
+        </section>
+
+        <section class="feature-grid">
+            <article class="feature">
+                <h4>Integritas Terjamin</h4>
+                <p>Hash dokumen akan berubah jika ada modifikasi konten, sehingga manipulasi langsung terdeteksi.</p>
+            </article>
+            <article class="feature">
+                <h4>Verifikasi Cepat</h4>
+                <p>Validasi signature dilakukan otomatis melalui public key dengan hasil VALID / INVALID yang jelas.</p>
+            </article>
+            <article class="feature">
+                <h4>Desain Praktis</h4>
+                <p>Interface clean dan modern untuk alur kerja generate key, sign PDF, dan verifikasi dokumen.</p>
+            </article>
+        </section>
+
+        <section class="workflow">
+            <h3>Alur Penggunaan</h3>
+            <div class="steps">
+                <div class="step"><span>1</span>Generate Keypair</div>
+                <div class="step"><span>2</span>Sign PDF</div>
+                <div class="step"><span>3</span>Verify PDF</div>
+            </div>
+        </section>
+
+        <section id="tools" class="tool-grid">
+            <article class="card">
+                <h2>1) Generate Keypair</h2>
+                <p>Buat private key & public key ECDSA (SECP256R1).</p>
+                <button id="btn-generate" class="btn primary">Generate Keys</button>
+                <div id="generate-result" class="result hidden"></div>
+            </article>
+
+            <article class="card">
+                <h2>2) Sign PDF</h2>
+                <form id="sign-form" novalidate>
+                    <label>File PDF</label>
+                    <input type="file" id="sign-pdf" name="pdf" accept=".pdf,application/pdf" required />
+
+                    <label>Private Key (.pem)</label>
+                    <input type="file" id="sign-private" name="private_key" accept=".pem,.key,text/plain" required />
+
+                    <button type="submit" class="btn primary">Sign PDF</button>
+                </form>
+                <div id="sign-result" class="result hidden"></div>
+            </article>
+
+            <article class="card">
+                <h2>3) Verify PDF</h2>
+                <form id="verify-form" novalidate>
+                    <label>File PDF</label>
+                    <input type="file" id="verify-pdf" name="pdf" accept=".pdf,application/pdf" required />
+
+                    <label>Signature (.sig.json / .json)</label>
+                    <input type="file" id="verify-signature" name="signature" accept=".json,.sig.json,application/json"
+                        required />
+
+                    <label>Public Key (.pem)</label>
+                    <input type="file" id="verify-public" name="public_key" accept=".pem,.pub,text/plain" required />
+
+                    <button type="submit" class="btn primary">Verify PDF</button>
+                </form>
+                <div id="verify-result" class="result hidden"></div>
+            </article>
+        </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
