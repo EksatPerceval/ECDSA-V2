@@ -25,7 +25,7 @@ Aplikasi full-stack untuk tanda tangan digital PDF menggunakan **ECDSA** dengan 
 ## Cara Menjalankan
 
 1. Buat virtual env:
-   - Windows CMD:
+   - NEW TERMINAL :
      - `python -m venv .venv`
      - `.venv\Scripts\activate`
 2. Install dependency:
