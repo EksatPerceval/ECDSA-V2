@@ -1,4 +1,0 @@
-- [x] Tambahkan komentar pada seluruh fungsi di `app.py`
-- [x] Tambahkan komentar pada seluruh fungsi di `static/app.js`
-- [x] Verifikasi cepat tidak ada perubahan logic/sintaks rusak
-- [x] Update TODO setelah semua langkah selesai
