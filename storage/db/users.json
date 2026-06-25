@@ -1,0 +1,84 @@
+{
+  "users": [
+    {
+      "id": "005372cc483f430f8864532f31209379",
+      "username": "tester1",
+      "password_hash": "scrypt:32768:8:1$B2XIvLHeZ1esA13d$e6e146fa2d3ce37a1370b348c529e97079eb8830a6a883d15e70738b426c7972e75a4dcaa520fbf95b767150fa10218463bd1be72681ad89998fad7d418d59e3",
+      "full_name": "Dosen Uji",
+      "nip": "19880011",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_005372cc483f430f8864532f31209379_private_20260625174058.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_005372cc483f430f8864532f31209379_public_20260625174058.pem",
+      "created_at_utc": "2026-06-25T17:40:58.960691+00:00"
+    },
+    {
+      "id": "1994ff35ca4a4a3f944cafc21ad6952c",
+      "username": "SNOVA",
+      "password_hash": "scrypt:32768:8:1$MNmkzAXp0vhGqPbD$0c3c0b4fc489aa921f403fb0b1a23e4f7909d1fc04fda0858f56469f658aae359b41c6aa232e92f0a08fed016ec077388aae280dbe26f53eb3164edf1d0fb949",
+      "full_name": "SNOVA",
+      "nip": "111",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_1994ff35ca4a4a3f944cafc21ad6952c_private_20260625174223.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_1994ff35ca4a4a3f944cafc21ad6952c_public_20260625174223.pem",
+      "created_at_utc": "2026-06-25T17:42:23.640754+00:00"
+    },
+    {
+      "id": "5015aac6c8a742dd971d00ca9332fc49",
+      "username": "tester_keys",
+      "password_hash": "scrypt:32768:8:1$JwKBLX0KbpbbW0id$2060d16c34f7ae7a996d91364345596fd5603fed2eb54c70f9afd2081ff1c58a02a95d1c8874ca6a96e4b396f6e13a6d7e580a9ad58b224dbbf4b87cb9a8f56a",
+      "full_name": "Key User",
+      "nip": "20001111",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_5015aac6c8a742dd971d00ca9332fc49_private_20260625175034.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_5015aac6c8a742dd971d00ca9332fc49_public_20260625175034.pem",
+      "created_at_utc": "2026-06-25T17:50:34.572559+00:00"
+    },
+    {
+      "id": "5361e4bfb9494c67a00233e27566564d",
+      "username": "tester_full2",
+      "password_hash": "scrypt:32768:8:1$pxDlmAS5peWzAMfL$30491b48f832de1528c847918974be28c7d3f072cb086744fb72cc756fa5761fbfff65012cb3c4655df274090881338de9fe0f75cfd91180fd7ea07b33885d27",
+      "full_name": "Dosen Uji",
+      "nip": "19870001",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_5361e4bfb9494c67a00233e27566564d_private_20260625181418.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_5361e4bfb9494c67a00233e27566564d_public_20260625181418.pem",
+      "created_at_utc": "2026-06-25T18:14:19.019292+00:00"
+    },
+    {
+      "id": "80cafa18e3ac4fa1b3ac46191bca6820",
+      "username": "expuser_1782413349",
+      "password_hash": "scrypt:32768:8:1$xLteyu5wrNCx7idz$ab4c94c13ab54002097aa25727fc01cd87b5f9511956741e50cb27a59e7677dcb89171ef980219bf068a93e658f7ad48f2850a0adc22eb136d4ec92fe05b97b0",
+      "full_name": "Dosen Expired",
+      "nip": "198811112024001001",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_80cafa18e3ac4fa1b3ac46191bca6820_private_20260625184909.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_80cafa18e3ac4fa1b3ac46191bca6820_public_20260625184909.pem",
+      "created_at_utc": "2026-06-25T18:49:09.953069+00:00"
+    },
+    {
+      "id": "a1e825fae9ae41f5a8bdd047e69ad423",
+      "username": "expok_1782413399",
+      "password_hash": "scrypt:32768:8:1$48sdR3wQVn7C9nTq$76b5c543931a2239736963b31e451ffca9b9114c5913a44fa178c15616e2034cb508bf88774c116e9831a8f03cf5cdffecff4ef0557159cded6bc28da0e98f25",
+      "full_name": "Dosen Exp",
+      "nip": "199001012024001001",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_a1e825fae9ae41f5a8bdd047e69ad423_private_20260625184959.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_a1e825fae9ae41f5a8bdd047e69ad423_public_20260625184959.pem",
+      "created_at_utc": "2026-06-25T18:49:59.770952+00:00"
+    },
+    {
+      "id": "48278ae228e34fc38b87331026b052bc",
+      "username": "expdbg_1782413408",
+      "password_hash": "scrypt:32768:8:1$Qj9xTBWayuJQ7WSr$1c0309918c87147e577aa00c5cb69030a4e5eb424b37688b62bbc2016944e65df3534a2e6df61267f6c02f07f288d8a46a8df886d245c96f0644ebd44128a4dc",
+      "full_name": "Dosen Exp",
+      "nip": "199001012024001001",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_48278ae228e34fc38b87331026b052bc_private_20260625185008.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_48278ae228e34fc38b87331026b052bc_public_20260625185008.pem",
+      "created_at_utc": "2026-06-25T18:50:08.472578+00:00"
+    },
+    {
+      "id": "d3ded15772164c1b86c134b6f91d4cb8",
+      "username": "expdbg2_1782413483",
+      "password_hash": "scrypt:32768:8:1$LJuxe6x9FBpIzG63$e3073ef6f6acdf926f16dd2f083d83357014c489e2c0eea027d1bb0f0773d1059601e2aa02c46d59b85ebdddf11dba16beae27a1e7486435198ec190ea92b1fc",
+      "full_name": "Dosen Exp",
+      "nip": "199001012024001001",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_d3ded15772164c1b86c134b6f91d4cb8_private_20260625185123.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_d3ded15772164c1b86c134b6f91d4cb8_public_20260625185123.pem",
+      "created_at_utc": "2026-06-25T18:51:23.371908+00:00"
+    }
+  ]
+}

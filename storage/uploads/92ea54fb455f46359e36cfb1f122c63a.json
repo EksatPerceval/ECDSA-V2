@@ -1,0 +1,16 @@
+{
+  "signature_id": "0ffe9ca11dc347399a8946391fff3e06",
+  "algorithm": "ECDSA",
+  "curve": "SECP256R1",
+  "hash_algorithm": "SHA256",
+  "document_name": "YUDHAKANDA.pdf",
+  "document_hash_hex": "bc2c46b825320e0bda329507eceb53461aa24d19b7508999bf7fe6ff145076c8",
+  "signature_b64": "MEUCIQDVngDoosd/Zf4LJZi/kSeDyeWGEGX+hUVH1KqOaQGNdQIgTlZAGZrK2sEiezlsmb29c91N8C4Uuqg8E0vQSTIp7XI=",
+  "created_at_utc": "2026-06-25T17:42:47.311730+00:00",
+  "signer": {
+    "user_id": "1994ff35ca4a4a3f944cafc21ad6952c",
+    "username": "SNOVA",
+    "full_name": "SNOVA",
+    "nip": "111"
+  }
+}

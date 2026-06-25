@@ -14,76 +14,98 @@
 
     <main class="landing">
         <header class="hero">
-            <span class="badge">Secure PDF Signature · ECDSA</span>
-            <h1>Amankan Dokumen PDF dengan Tanda Tangan Digital ECDSA</h1>
+            <span class="badge">Secure PDF Signature · ECDSA + QR Verification</span>
+            <h1>Tanda Tangan Digital Dosen dengan Verifikasi QR Terintegrasi</h1>
             <p class="hero-subtitle">
-                Solusi modern untuk menjaga keaslian dan integritas dokumen.
-                Jika isi PDF diubah sedikit saja, hasil verifikasi langsung terdeteksi <strong>INVALID</strong>.
+                User login satu kali, keypair terikat akun, lalu cukup klik <strong>Sign</strong>.
+                Sistem menghasilkan signature + QR code untuk validasi identitas penandatangan.
             </p>
-
             <div class="hero-cta">
-                <a href="#tools" class="btn cta">Mulai Sekarang</a>
-                <a href="#about-ecdsa" class="btn ghost">Pelajari ECDSA</a>
+                <a href="#auth-section" class="btn cta">Mulai</a>
+                <a href="#verify-qr-section" class="btn ghost">Verifikasi QR</a>
             </div>
         </header>
 
-        <section id="about-ecdsa" class="info-card">
-            <h3>Apa itu ECDSA?</h3>
-            <p>
-                <strong>ECDSA (Elliptic Curve Digital Signature Algorithm)</strong> adalah metode kriptografi untuk
-                memastikan <strong>keaslian</strong>, <strong>integritas</strong>, dan <strong>non-repudiation</strong>
-                dokumen digital. Dokumen ditandatangani menggunakan private key dan diverifikasi menggunakan public key.
-            </p>
-        </section>
-
         <section class="feature-grid">
             <article class="feature">
-                <h4>Integritas Terjamin</h4>
-                <p>Hash dokumen akan berubah jika ada modifikasi konten, sehingga manipulasi langsung terdeteksi.</p>
+                <h4>Auto Keypair per Akun</h4>
+                <p>Saat registrasi, public/private key dibuat otomatis dan terhubung dengan user.</p>
             </article>
             <article class="feature">
-                <h4>Verifikasi Cepat</h4>
-                <p>Validasi signature dilakukan otomatis melalui public key dengan hasil VALID / INVALID yang jelas.</p>
+                <h4>One-Click Sign</h4>
+                <p>User yang sudah login cukup upload PDF lalu Sign tanpa upload private key manual.</p>
             </article>
             <article class="feature">
-                <h4>Desain Praktis</h4>
-                <p>Interface clean dan modern untuk alur kerja generate key, sign PDF, dan verifikasi dokumen.</p>
+                <h4>QR Identity Check</h4>
+                <p>QR memuat identitas signer untuk validasi cepat dokumen valid/invalid.</p>
             </article>
         </section>
 
-        <section class="workflow">
-            <h3>Alur Penggunaan</h3>
-            <div class="steps">
-                <div class="step"><span>1</span>Generate Keypair</div>
-                <div class="step"><span>2</span>Sign PDF</div>
-                <div class="step"><span>3</span>Verify PDF</div>
+        <section id="auth-section" class="tool-grid tool-grid-2">
+            <article class="card">
+                <h2>Login Akun</h2>
+                <form id="login-form" novalidate>
+                    <label>Username</label>
+                    <input type="text" id="login-username" required />
+
+                    <label>Password</label>
+                    <input type="password" id="login-password" required />
+
+                    <button type="submit" class="btn primary">Login</button>
+                </form>
+                <div id="login-result" class="result hidden"></div>
+            </article>
+
+            <article class="card">
+                <h2>Registrasi Akun</h2>
+                <form id="register-form" novalidate>
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="register-full-name" required />
+
+                    <label>NIP</label>
+                    <input type="text" id="register-nip" required />
+
+                    <label>Username</label>
+                    <input type="text" id="register-username" required />
+
+                    <label>Password</label>
+                    <input type="password" id="register-password" required />
+
+                    <button type="submit" class="btn primary">Register</button>
+                </form>
+                <div id="register-result" class="result hidden"></div>
+            </article>
+        </section>
+
+        <section class="card account-card">
+            <h2>Session User</h2>
+            <p id="session-state">Belum login.</p>
+            <div class="session-actions">
+                <button id="btn-download-private" class="btn ghost hidden">Download Private Key</button>
+                <button id="btn-download-public" class="btn ghost hidden">Download Public Key</button>
+                <button id="btn-logout" class="btn ghost hidden">Logout</button>
             </div>
+            <div id="session-result" class="result hidden"></div>
         </section>
 
         <section id="tools" class="tool-grid">
             <article class="card">
-                <h2>1) Generate Keypair</h2>
-                <p>Buat private key & public key ECDSA (SECP256R1).</p>
-                <button id="btn-generate" class="btn primary">Generate Keys</button>
-                <div id="generate-result" class="result hidden"></div>
-            </article>
-
-            <article class="card">
-                <h2>2) Sign PDF</h2>
+                <h2>1) Sign PDF</h2>
+                <p>Upload PDF, sistem akan sign dengan private key user login.</p>
                 <form id="sign-form" novalidate>
                     <label>File PDF</label>
                     <input type="file" id="sign-pdf" name="pdf" accept=".pdf,application/pdf" required />
-
-                    <label>Private Key (.pem)</label>
-                    <input type="file" id="sign-private" name="private_key" accept=".pem,.key,text/plain" required />
-
-                    <button type="submit" class="btn primary">Sign PDF</button>
+                    <button type="submit" class="btn primary">Sign Dokumen</button>
                 </form>
                 <div id="sign-result" class="result hidden"></div>
+                <div id="qr-preview" class="qr-preview hidden">
+                    <p>QR untuk ditempel di bawah teks <strong>“Dosen Pembimbing Akademik”</strong> pada PDF:</p>
+                    <img id="qr-image" alt="QR Signature" />
+                </div>
             </article>
 
             <article class="card">
-                <h2>3) Verify PDF</h2>
+                <h2>2) Verify Signature PDF</h2>
                 <form id="verify-form" novalidate>
                     <label>File PDF</label>
                     <input type="file" id="verify-pdf" name="pdf" accept=".pdf,application/pdf" required />
@@ -95,9 +117,22 @@
                     <label>Public Key (.pem)</label>
                     <input type="file" id="verify-public" name="public_key" accept=".pem,.pub,text/plain" required />
 
-                    <button type="submit" class="btn primary">Verify PDF</button>
+                    <button type="submit" class="btn primary">Verify Signature</button>
                 </form>
                 <div id="verify-result" class="result hidden"></div>
+            </article>
+
+            <article id="verify-qr-section" class="card">
+                <h2>3) Verify QR Signer</h2>
+                <p>Tempel payload JSON hasil scan QR untuk validasi identitas signer.</p>
+                <form id="verify-qr-form" novalidate>
+                    <label>QR Payload (JSON)</label>
+                    <textarea id="qr-payload" rows="8"
+                        placeholder='{"type":"ECDSA_SIGNATURE","signature_id":"...","signer":{"full_name":"...","nip":"..."}}'
+                        required></textarea>
+                    <button type="submit" class="btn primary">Verify QR</button>
+                </form>
+                <div id="verify-qr-result" class="result hidden"></div>
             </article>
         </section>
     </main>

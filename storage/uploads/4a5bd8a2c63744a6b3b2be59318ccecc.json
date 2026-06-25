@@ -1,0 +1,17 @@
+{
+  "signature_id": "f461f843ee2d4375b13fea14b9439b31",
+  "algorithm": "ECDSA",
+  "curve": "SECP256R1",
+  "hash_algorithm": "SHA256",
+  "document_name": "MAKALAH_ETIKA_PROFESI_KELOMPOK_7.pdf",
+  "signed_pdf_filename": "signed_7924602a50d14c61b753b448c8b1689c.pdf",
+  "document_hash_hex": "f2a6153c389b176a33961e1b38a2465766aff3e94a976501039e25beb197c2f6",
+  "signature_b64": "MEUCIQD6HOMuKAqLhyAF0DvMWIGIVXPLvWPmMMCAnm8Fm5CD1wIgXWpRU6DDOx+Itp2KE3jYP4HLdo9U9lXSQ42qPrhZ5Xs=",
+  "created_at_utc": "2026-06-25T18:23:25.493474+00:00",
+  "signer": {
+    "user_id": "1994ff35ca4a4a3f944cafc21ad6952c",
+    "username": "SNOVA",
+    "full_name": "SNOVA",
+    "nip": "111"
+  }
+}

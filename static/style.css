@@ -270,13 +270,22 @@ label {
     color: #334155;
 }
 
-input[type="file"] {
+input[type="file"],
+input[type="text"],
+input[type="password"],
+textarea {
     width: 100%;
-    border: 1px dashed #cfdcff;
+    border: 1px solid #d7e3ff;
     padding: 10px;
     border-radius: 10px;
     background: #fcfdff;
     color: var(--text);
+    font: inherit;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
 }
 
 .btn.primary {
@@ -341,10 +350,49 @@ input[type="file"] {
     font-weight: 700;
 }
 
+.tool-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-card {
+    margin-top: 14px;
+}
+
+.session-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.qr-preview {
+    margin-top: 12px;
+    border: 1px dashed #cbdafc;
+    border-radius: 10px;
+    padding: 12px;
+    background: #f8fbff;
+}
+
+.qr-preview img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #dbe6ff;
+    background: #fff;
+    padding: 6px;
+}
+
+.placement-hint {
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: #475569;
+}
+
 @media (max-width: 980px) {
 
     .feature-grid,
-    .tool-grid {
+    .tool-grid,
+    .tool-grid-2 {
         grid-template-columns: 1fr;
     }
 

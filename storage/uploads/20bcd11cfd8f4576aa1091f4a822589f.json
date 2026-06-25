@@ -1,0 +1,16 @@
+{
+  "signature_id": "c9b0b20a870d4a8c90cff24a6682a5d4",
+  "algorithm": "ECDSA",
+  "curve": "SECP256R1",
+  "hash_algorithm": "SHA256",
+  "document_name": "ringkasan_prognet.pdf",
+  "document_hash_hex": "ae9d7df4e82567e5f579bca26cf33bd7e992768cf660ad1ddcc09a2f0912ced1",
+  "signature_b64": "MEYCIQD5Lr+Oj7j9CXsLAmT5l0mm1E+aGJ+sNIxmcJ8QpdkxUgIhANgfgdwXnz/aKRi686embXYnLrI2vx2TcRxQmeIKoMsl",
+  "created_at_utc": "2026-06-25T17:51:41.197338+00:00",
+  "signer": {
+    "user_id": "1994ff35ca4a4a3f944cafc21ad6952c",
+    "username": "SNOVA",
+    "full_name": "SNOVA",
+    "nip": "111"
+  }
+}
