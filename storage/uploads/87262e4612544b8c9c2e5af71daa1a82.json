@@ -1,0 +1,18 @@
+{
+  "signature_id": "7a9610589d594c95bdc47b2ee07ec894",
+  "algorithm": "ECDSA",
+  "curve": "SECP256R1",
+  "hash_algorithm": "SHA256",
+  "document_name": "Tugas_Indra_Makro.pdf",
+  "signed_pdf_filename": "signed_20cc9cf601974cefacaaad71d669a35f.pdf",
+  "document_hash_hex": "e1fbeca43fbaa1b2dcab7eb84b26da242821840e4226be43da6a2f3e1f3aa767",
+  "signature_b64": "MEQCIHvXI/zGbQ5ScqhkNL0fSAApomvDoh/mCNnn8nKTB0+yAiBz4JvE2gqEK1Lzt8WPV3E9SAwij++mEdVG/h86YIY1Jg==",
+  "created_at_utc": "2026-06-25T19:20:46.259628+00:00",
+  "expires_at_utc": "2026-07-25T19:20:46.259628+00:00",
+  "signer": {
+    "user_id": "1994ff35ca4a4a3f944cafc21ad6952c",
+    "username": "SNOVA",
+    "full_name": "SNOVA",
+    "nip": "111"
+  }
+}

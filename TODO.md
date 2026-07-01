@@ -14,3 +14,17 @@
 - [ ] 12. Tambah fitur masa berlaku (expired) pada signature & QR verify
 - [ ] 13. Jalankan pengujian ulang untuk skenario expired
 - [ ] 14. Finalisasi dokumentasi singkat perubahan
+- [x] 15. Tambah UI drag-and-drop posisi QR pada dokumen sebelum sign
+- [x] 16. Kirim koordinat posisi QR dari frontend ke endpoint /api/sign
+- [x] 17. Ubah backend penempatan QR agar memakai koordinat dinamis (fallback default)
+- [ ] 18. Uji alur sign dengan posisi QR custom
+- [x] 19. Tambah preview PDF langsung untuk drag-drop QR pada halaman terakhir
+- [x] 20. Tampilkan overlay nama signer dan NIP pada area drag
+- [ ] 21. Uji integrasi preview PDF + drag-drop + hasil PDF final
+- [ ] 22. Fix mapping koordinat Y preview ke PDF agar posisi tempel sesuai
+- [ ] 23. Default overlay Nama+NIP dari user login saat preview/sign
+- [ ] 24. Kecilkan ukuran box QR preview untuk presisi drag lebih baik
+- [ ] 25. Kalibrasi ulang mapping skala preview ke PDF untuk akurasi posisi
+- [ ] 26. Ubah format blok QR signed vertikal sesuai template (lokasi/tanggal, jabatan, QR, nama, NIP)
+- [ ] 27. Sinkronkan tampilan preview overlay dengan format blok signed terbaru
+- [x] 28. Update format blok signed PDF: lokasi default Jimbaran, tanggal nama bulan Indonesia, center align, style Pembimbing Akademik

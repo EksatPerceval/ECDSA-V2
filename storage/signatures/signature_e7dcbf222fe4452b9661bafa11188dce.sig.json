@@ -1,0 +1,18 @@
+{
+  "signature_id": "e7dcbf222fe4452b9661bafa11188dce",
+  "algorithm": "ECDSA",
+  "curve": "SECP256R1",
+  "hash_algorithm": "SHA256",
+  "document_name": "Ringkasan_UAS_JTRIP.pdf",
+  "signed_pdf_filename": "signed_488afa992e834f50a7934235dd71a364.pdf",
+  "document_hash_hex": "398e730da708393860b19a1a832c173740da5aec2585fed845b4319e02bc0cc0",
+  "signature_b64": "MEUCIBbtR1ju6mFFyGIc6w+v5+UfM+x8f87Le/Mpa3XBD1m0AiEAqnp5LvGFTiAsD8lepQTwmTZ1QYCK5QGMb68X5wCslv8=",
+  "created_at_utc": "2026-07-01T11:26:11.255231+00:00",
+  "expires_at_utc": "2026-07-31T11:26:11.255231+00:00",
+  "signer": {
+    "user_id": "e04791209d9948ad9b06f90b16710fb4",
+    "username": "SEIZE",
+    "full_name": "SEIZE SNOVA",
+    "nip": "777"
+  }
+}

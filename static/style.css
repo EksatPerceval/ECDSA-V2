@@ -388,6 +388,96 @@ textarea {
     color: #475569;
 }
 
+.qr-position-builder {
+    margin-top: 14px;
+    border: 1px solid #d9e5ff;
+    border-radius: 10px;
+    background: #f8fbff;
+    padding: 10px;
+}
+
+.qr-position-title {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.qr-position-subtitle {
+    margin: 6px 0 10px;
+    font-size: 0.82rem;
+    color: #475569;
+}
+
+.pdf-preview-stage {
+    margin-top: 8px;
+    position: relative;
+    width: 100%;
+    min-height: 320px;
+    border: 1px dashed #b8cdfa;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #ffffff, #f7fbff);
+    overflow: auto;
+    padding: 10px;
+}
+
+#pdf-preview-canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.pdf-preview-empty {
+    margin: 8px 0 0;
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.qr-drag-box {
+    position: absolute;
+    width: 96px;
+    min-height: 74px;
+    left: 20px;
+    top: 20px;
+    border: 1px solid #7aa2ff;
+    border-radius: 8px;
+    background: rgba(59, 130, 246, 0.12);
+    color: #1e40af;
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 4px;
+    cursor: grab;
+    user-select: none;
+    backdrop-filter: blur(1px);
+}
+
+.qr-drag-box-qr {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    border: 1px dashed #5b89f7;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1d4ed8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-drag-box-text {
+    font-size: 0.62rem;
+    line-height: 1.2;
+    color: #1e3a8a;
+}
+
+.qr-drag-box:active {
+    cursor: grabbing;
+}
+
 @media (max-width: 980px) {
 
     .feature-grid,

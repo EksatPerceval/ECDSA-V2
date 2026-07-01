@@ -5,7 +5,7 @@ import json
 import os
 import re
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 
 import qrcode
 from cryptography.exceptions import InvalidSignature
@@ -178,7 +178,42 @@ def create_qr_png_bytes(payload_dict) -> bytes:
     return buf.getvalue()
 
 
-def build_signed_pdf_with_qr_and_name(src_pdf_path: str, qr_png_bytes: bytes, signer_name: str) -> str:
+def parse_ratio(value, default_value):
+    try:
+        parsed = float(value)
+        if parsed < 0:
+            return 0.0
+        if parsed > 1:
+            return 1.0
+        return parsed
+    except Exception:
+        return default_value
+
+
+def format_indonesian_date(dt_obj) -> str:
+    if isinstance(dt_obj, datetime):
+        d = dt_obj.date()
+    elif isinstance(dt_obj, date):
+        d = dt_obj
+    else:
+        d = datetime.now(timezone(timedelta(hours=7))).date()
+
+    bulan_id = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ]
+    return f"{d.day} {bulan_id[d.month - 1]} {d.year}"
+
+
+def build_signed_pdf_with_qr_and_name(
+    src_pdf_path: str,
+    qr_png_bytes: bytes,
+    signer_name: str,
+    signer_nip: str = "",
+    qr_x_ratio: float = 0.03,
+    qr_y_ratio: float = 0.05,
+    signed_location_date: str = "",
+) -> str:
     reader = PdfReader(src_pdf_path)
     writer = PdfWriter()
 
@@ -193,17 +228,52 @@ def build_signed_pdf_with_qr_and_name(src_pdf_path: str, qr_png_bytes: bytes, si
         overlay_stream = io.BytesIO()
         c = canvas.Canvas(overlay_stream, pagesize=(width, height))
 
-        margin_x = 36
-        margin_y = 24
-        qr_size = 82
+        qr_size = 72
+        block_width = 190
+        line_gap = 12  # approx single spacing (1.0)
+        block_height = 172
+        max_x = max(width - block_width - 12, 0)
+        max_y = max(height - block_height - 12, 0)
 
-        c.setFont("Helvetica-Bold", 9)
-        c.drawString(margin_x + qr_size + 12, margin_y + 52, "Dosen Pembimbing Akademik")
+        margin_x = qr_x_ratio * max_x
+        # sinkronkan orientasi Y dari preview (top-left) ke PDF (bottom-left)
+        margin_y = (1.0 - qr_y_ratio) * max_y
+
+        top_y = margin_y + block_height
+        center_x = margin_x + (block_width / 2)
+
+        # Lokasi + tanggal (center)
         c.setFont("Helvetica", 9)
-        c.drawString(margin_x + qr_size + 12, margin_y + 36, signer_name)
+        c.drawCentredString(center_x, top_y - 2, signed_location_date or "Jimbaran, 1 Juli 2026")
 
+        # Jabatan (tidak bold) + spacing 1.0
+        c.setFont("Helvetica", 9)
+        c.drawCentredString(center_x, top_y - 2 - line_gap, "Pembimbing Akademik")
+
+        # QR (center)
         qr_reader = ImageReader(io.BytesIO(qr_png_bytes))
-        c.drawImage(qr_reader, margin_x, margin_y, width=qr_size, height=qr_size, preserveAspectRatio=True, mask="auto")
+        qr_x = center_x - (qr_size / 2)
+        qr_y = top_y - 2 - (line_gap * 2) - qr_size
+        c.drawImage(
+            qr_reader,
+            qr_x,
+            qr_y,
+            width=qr_size,
+            height=qr_size,
+            preserveAspectRatio=True,
+            mask="auto",
+        )
+
+        # Nama pembimbing (center + underline)
+        c.setFont("Helvetica", 9)
+        name_text = signer_name or "-"
+        name_y = qr_y - 16
+        c.drawCentredString(center_x, name_y, name_text)
+        name_width = c.stringWidth(name_text, "Helvetica", 9)
+        c.line(center_x - (name_width / 2), name_y - 2, center_x + (name_width / 2), name_y - 2)
+
+        # NIP (center)
+        c.drawCentredString(center_x, name_y - 14, f"NIP: {signer_nip or '-'}")
 
         c.save()
         overlay_stream.seek(0)
@@ -445,7 +515,34 @@ def sign_pdf():
         qr_png_bytes = create_qr_png_bytes(qr_payload)
         qr_data_uri = "data:image/png;base64," + base64.b64encode(qr_png_bytes).decode("utf-8")
 
-        signed_pdf_path = build_signed_pdf_with_qr_and_name(pdf_path, qr_png_bytes, user["full_name"])
+        qr_x_ratio = parse_ratio(request.form.get("qr_x_ratio"), 0.03)
+        qr_y_ratio = parse_ratio(request.form.get("qr_y_ratio"), 0.05)
+
+        signer_name_input = (request.form.get("signer_name") or "").strip()
+        signer_nip_input = (request.form.get("signer_nip") or "").strip()
+        signer_name = signer_name_input if signer_name_input else user["full_name"]
+        signer_nip = signer_nip_input if signer_nip_input else user["nip"]
+
+        signed_location_input = (request.form.get("signed_location") or "").strip()
+        final_location = signed_location_input if signed_location_input else "Jimbaran"
+        date_local = created_at_utc.astimezone(timezone(timedelta(hours=7)))
+        date_local_str = format_indonesian_date(date_local)
+        signed_location_date = f"{final_location}, {date_local_str}"
+
+        # Guard agar variabel selalu tersedia walau ada mismatch runtime/cached code path
+        if "signed_location_date" not in locals() or not signed_location_date:
+            fallback_location = signed_location_input if signed_location_input else "Jimbaran"
+            signed_location_date = f"{fallback_location}, {date_local_str}"
+
+        signed_pdf_path = build_signed_pdf_with_qr_and_name(
+            pdf_path,
+            qr_png_bytes,
+            signer_name,
+            signer_nip=signer_nip,
+            qr_x_ratio=qr_x_ratio,
+            qr_y_ratio=qr_y_ratio,
+            signed_location_date=signed_location_date,
+        )
         signed_pdf_bytes = read_file_bytes(signed_pdf_path)
         signed_pdf_hash_hex = sha256_hex(signed_pdf_bytes)
 
@@ -485,7 +582,7 @@ def sign_pdf():
         return jsonify(
             {
                 "ok": True,
-                "message": "PDF berhasil ditandatangani. File PDF hasil sign sudah berisi QR dan nama dosen di bagian bawah.",
+                "message": "PDF berhasil ditandatangani. File PDF hasil sign sudah berisi QR dan nama dosen sesuai posisi yang dipilih.",
                 "signature": {
                     "filename": sig_name,
                     "content": json.dumps(sig_payload, ensure_ascii=False, indent=2),
@@ -497,7 +594,7 @@ def sign_pdf():
                 "qr": {
                     "payload": qr_payload,
                     "image_data_uri": qr_data_uri,
-                    "placement_hint": "QR dan nama dosen sudah otomatis ditempel di bagian bawah PDF hasil sign.",
+                    "placement_hint": "QR ditempel sesuai posisi drag-and-drop yang Anda pilih pada form sign.",
                 },
             }
         )

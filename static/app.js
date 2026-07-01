@@ -87,6 +87,183 @@ const verifyResult = document.getElementById("verify-result");
 const verifyQrForm = document.getElementById("verify-qr-form");
 const verifyQrResult = document.getElementById("verify-qr-result");
 
+const signPdfInput = document.getElementById("sign-pdf");
+const pdfPreviewStage = document.getElementById("pdf-preview-stage");
+const pdfPreviewCanvas = document.getElementById("pdf-preview-canvas");
+const pdfPreviewEmpty = document.getElementById("pdf-preview-empty");
+const qrDragBox = document.getElementById("qr-drag-box");
+const qrDragBoxText = document.getElementById("qr-drag-box-text");
+
+const qrPlacementState = {
+  xRatio: 0.03,
+  yRatio: 0.05,
+  pdfWidth: 0,
+  pdfHeight: 0,
+  signerName: "",
+  signerNip: "",
+};
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function syncSignerOverlayText() {
+  if (!qrDragBoxText) return;
+  const finalName = (qrPlacementState.signerName || "").trim() || "Nama Signer";
+  const finalNip = (qrPlacementState.signerNip || "").trim() || "NIP";
+  qrDragBoxText.textContent = `${finalName} · ${finalNip}`;
+}
+
+function getPreviewBounds() {
+  if (!pdfPreviewCanvas) return { width: 1, height: 1 };
+  return {
+    width: Math.max(pdfPreviewCanvas.clientWidth, 1),
+    height: Math.max(pdfPreviewCanvas.clientHeight, 1),
+  };
+}
+
+function applyQrDragPositionByRatio() {
+  if (!qrDragBox || !pdfPreviewCanvas) return;
+  const boxW = qrDragBox.offsetWidth || 96;
+  const boxH = qrDragBox.offsetHeight || 74;
+  const bounds = getPreviewBounds();
+  const maxX = Math.max(bounds.width - boxW, 0);
+  const maxY = Math.max(bounds.height - boxH, 0);
+  const left = clamp(Math.round(qrPlacementState.xRatio * maxX), 0, maxX);
+  const top = clamp(Math.round(qrPlacementState.yRatio * maxY), 0, maxY);
+  qrDragBox.style.left = `${left}px`;
+  qrDragBox.style.top = `${top}px`;
+}
+
+function updateQrRatioFromPixel(leftPx, topPx) {
+  if (!qrDragBox || !pdfPreviewCanvas) return;
+  const boxW = qrDragBox.offsetWidth || 96;
+  const boxH = qrDragBox.offsetHeight || 74;
+  const bounds = getPreviewBounds();
+  const maxX = Math.max(bounds.width - boxW, 1);
+  const maxY = Math.max(bounds.height - boxH, 1);
+  qrPlacementState.xRatio = clamp(leftPx / maxX, 0, 1);
+  qrPlacementState.yRatio = clamp(topPx / maxY, 0, 1);
+}
+
+async function renderPdfPreview(file) {
+  if (!file || !pdfPreviewCanvas || !pdfPreviewStage || !pdfPreviewEmpty) return;
+
+  try {
+    let pdfLib = window.pdfjsLib;
+    if (!pdfLib) {
+      if (window["pdfjs-dist/build/pdf"]) {
+        pdfLib = window["pdfjs-dist/build/pdf"];
+      }
+    }
+
+    if (!pdfLib || !pdfLib.getDocument) {
+      showResult(
+        signResult,
+        "PDF preview gagal: library pdf.js tidak termuat. Cek koneksi internet/CDN atau refresh halaman.",
+        "error"
+      );
+      return;
+    }
+
+    if (pdfLib.GlobalWorkerOptions && !pdfLib.GlobalWorkerOptions.workerSrc) {
+      pdfLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    }
+
+    const bytes = await file.arrayBuffer();
+    const loadingTask = pdfLib.getDocument({ data: bytes });
+    const pdf = await loadingTask.promise;
+    const lastPage = await pdf.getPage(pdf.numPages);
+
+    const baseViewport = lastPage.getViewport({ scale: 1.0 });
+    const stageWidth = Math.max((pdfPreviewStage.clientWidth || 640) - 20, 320);
+    const scale = stageWidth / baseViewport.width;
+    const viewport = lastPage.getViewport({ scale });
+
+    const ctx = pdfPreviewCanvas.getContext("2d");
+    pdfPreviewCanvas.width = viewport.width;
+    pdfPreviewCanvas.height = viewport.height;
+
+    qrPlacementState.pdfWidth = baseViewport.width;
+    qrPlacementState.pdfHeight = baseViewport.height;
+
+    await lastPage.render({
+      canvasContext: ctx,
+      viewport,
+    }).promise;
+
+    pdfPreviewStage.classList.remove("hidden");
+    pdfPreviewEmpty.classList.add("hidden");
+    syncSignerOverlayText();
+    applyQrDragPositionByRatio();
+  } catch (_err) {
+    showResult(signResult, "Gagal menampilkan preview PDF.", "error");
+  }
+}
+
+function initQrDragDrop() {
+  if (!qrDragBox || !pdfPreviewCanvas) return;
+
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+
+  qrDragBox.addEventListener("dragstart", (ev) => {
+    const rect = qrDragBox.getBoundingClientRect();
+    dragOffsetX = ev.clientX - rect.left;
+    dragOffsetY = ev.clientY - rect.top;
+    if (ev.dataTransfer) {
+      ev.dataTransfer.setData("text/plain", "qr");
+      ev.dataTransfer.effectAllowed = "move";
+    }
+  });
+
+  pdfPreviewCanvas.addEventListener("dragover", (ev) => {
+    ev.preventDefault();
+    if (ev.dataTransfer) ev.dataTransfer.dropEffect = "move";
+  });
+
+  pdfPreviewCanvas.addEventListener("drop", (ev) => {
+    ev.preventDefault();
+    const canvasRect = pdfPreviewCanvas.getBoundingClientRect();
+    const boxW = qrDragBox.offsetWidth || 96;
+    const boxH = qrDragBox.offsetHeight || 74;
+    const maxX = Math.max(pdfPreviewCanvas.clientWidth - boxW, 0);
+    const maxY = Math.max(pdfPreviewCanvas.clientHeight - boxH, 0);
+
+    const left = clamp(Math.round(ev.clientX - canvasRect.left - dragOffsetX), 0, maxX);
+    const top = clamp(Math.round(ev.clientY - canvasRect.top - dragOffsetY), 0, maxY);
+
+    qrDragBox.style.left = `${left}px`;
+    qrDragBox.style.top = `${top}px`;
+    updateQrRatioFromPixel(left, top);
+  });
+
+  signPdfInput?.addEventListener("change", async () => {
+    const file = signPdfInput.files?.[0];
+    const err = validatePdfFile(file);
+    if (err) return;
+    await renderPdfPreview(file);
+  });
+
+  window.addEventListener("resize", () => {
+    applyQrDragPositionByRatio();
+  });
+
+  syncSignerOverlayText();
+}
+
+function getQrPlacementPayload() {
+  return {
+    x_ratio: qrPlacementState.xRatio,
+    y_ratio: qrPlacementState.yRatio,
+    preview_pdf_width: qrPlacementState.pdfWidth,
+    preview_pdf_height: qrPlacementState.pdfHeight,
+    signer_name: (qrPlacementState.signerName || "").trim(),
+    signer_nip: (qrPlacementState.signerNip || "").trim(),
+  };
+}
+
 
 function setAuthUI(user) {
   if (!user) {
@@ -118,6 +295,9 @@ async function checkSession() {
 
     if (data.authenticated) {
       setAuthUI(data.user);
+      qrPlacementState.signerName = data.user.full_name || "";
+      qrPlacementState.signerNip = data.user.nip || "";
+      syncSignerOverlayText();
     } else {
       setAuthUI(null);
     }
@@ -193,6 +373,9 @@ loginForm.addEventListener("submit", async (e) => {
 
     showResult(loginResult, data.message || "Login berhasil.", "success");
     setAuthUI(data.user);
+    qrPlacementState.signerName = data.user.full_name || "";
+    qrPlacementState.signerNip = data.user.nip || "";
+    syncSignerOverlayText();
     loginForm.reset();
   } catch (_err) {
     showResult(loginResult, "Terjadi kesalahan jaringan saat login.", "error");
@@ -280,6 +463,14 @@ signForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData();
   formData.append("pdf", pdf);
+
+  const qrPlacement = getQrPlacementPayload();
+  formData.append("qr_x_ratio", String(qrPlacement.x_ratio));
+  formData.append("qr_y_ratio", String(qrPlacement.y_ratio));
+  formData.append("preview_pdf_width", String(qrPlacement.preview_pdf_width || ""));
+  formData.append("preview_pdf_height", String(qrPlacement.preview_pdf_height || ""));
+  formData.append("signer_name", qrPlacement.signer_name || "");
+  formData.append("signer_nip", qrPlacement.signer_nip || "");
 
   try {
     const res = await fetch("/api/sign", {
@@ -451,4 +642,5 @@ verifyQrForm.addEventListener("submit", async (e) => {
   }
 });
 
+initQrDragDrop();
 checkSession();

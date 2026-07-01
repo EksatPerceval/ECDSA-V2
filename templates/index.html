@@ -95,11 +95,27 @@
                 <form id="sign-form" novalidate>
                     <label>File PDF</label>
                     <input type="file" id="sign-pdf" name="pdf" accept=".pdf,application/pdf" required />
+
+                    <div class="qr-position-builder">
+                        <p class="qr-position-title">Atur Posisi QR di Preview PDF (Drag & Drop)</p>
+                        <p class="qr-position-subtitle">Geser kotak QR langsung di atas preview halaman terakhir PDF.
+                        </p>
+                        <div id="pdf-preview-stage" class="pdf-preview-stage hidden">
+                            <canvas id="pdf-preview-canvas"></canvas>
+                            <div id="qr-drag-box" class="qr-drag-box" draggable="true">
+                                <div class="qr-drag-box-qr">QR</div>
+                                <div id="qr-drag-box-text" class="qr-drag-box-text">Nama Signer · NIP</div>
+                            </div>
+                        </div>
+                        <p id="pdf-preview-empty" class="pdf-preview-empty">Pilih file PDF dulu untuk menampilkan
+                            preview.</p>
+                    </div>
+
                     <button type="submit" class="btn primary">Sign Dokumen</button>
                 </form>
                 <div id="sign-result" class="result hidden"></div>
                 <div id="qr-preview" class="qr-preview hidden">
-                    <p>QR untuk ditempel di bawah teks <strong>“Dosen Pembimbing Akademik”</strong> pada PDF:</p>
+                    <p>QR hasil generate:</p>
                     <img id="qr-image" alt="QR Signature" />
                 </div>
             </article>
@@ -137,6 +153,12 @@
         </section>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        if (window.pdfjsLib) {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        }
+    </script>
     <script src="/static/app.js"></script>
 </body>
 
