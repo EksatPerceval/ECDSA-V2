@@ -28,7 +28,7 @@ USERS_DB_PATH = os.path.join(DB_DIR, "users.json")
 
 MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20 MB
 ALLOWED_EXTENSIONS = {"pdf"}
-SIGNATURE_EXPIRE_DAYS_DEFAULT = 30
+SIGNATURE_EXPIRE_DAYS_DEFAULT = 1095
 
 for path in [STORAGE_DIR, KEYS_DIR, UPLOADS_DIR, SIGNATURES_DIR, DB_DIR]:
     os.makedirs(path, exist_ok=True)
@@ -513,7 +513,7 @@ def sign_pdf():
     try:
         pdf_path, original_pdf_name = save_uploaded_file(pdf_file, UPLOADS_DIR, must_be_pdf=True)
 
-        sig_id = uuid.uuid4().hex
+        sig_id = f"user_{user['id']}"
         created_at_utc = datetime.now(timezone.utc)
         expires_at_utc = (created_at_utc + timedelta(days=SIGNATURE_EXPIRE_DAYS_DEFAULT)).isoformat()
 
@@ -590,7 +590,7 @@ def sign_pdf():
             },
         }
 
-        sig_name = f"signature_{sig_id}.sig.json"
+        sig_name = f"signature_user_{user['id']}.sig.json"
         sig_path = os.path.join(SIGNATURES_DIR, sig_name)
         with open(sig_path, "w", encoding="utf-8") as f:
             json.dump(sig_payload, f, ensure_ascii=False, indent=2)
@@ -748,14 +748,21 @@ def verify_qr():
             return error_response("Field wajib: signature_id.", 400)
 
         sig_path = os.path.join(SIGNATURES_DIR, f"signature_{signature_id}.sig.json")
+        # Kompatibilitas format lama + baru:
+        # - lama: signature_<uuid>.sig.json
+        # - baru (1 akun 1 signature): signature_user_<user_id>.sig.json
         if not os.path.exists(sig_path):
-            return jsonify(
-                {
-                    "ok": True,
-                    "valid": False,
-                    "reason": "Signature ID dari QR tidak ditemukan.",
-                }
-            )
+            alt_sig_path = os.path.join(SIGNATURES_DIR, f"{signature_id}.sig.json")
+            if os.path.exists(alt_sig_path):
+                sig_path = alt_sig_path
+            else:
+                return jsonify(
+                    {
+                        "ok": True,
+                        "valid": False,
+                        "reason": "Signature ID dari QR tidak ditemukan.",
+                    }
+                )
 
         with open(sig_path, "r", encoding="utf-8") as f:
             sig_payload = json.load(f)

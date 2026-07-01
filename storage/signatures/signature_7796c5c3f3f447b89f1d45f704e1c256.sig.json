@@ -1,0 +1,18 @@
+{
+  "signature_id": "7796c5c3f3f447b89f1d45f704e1c256",
+  "algorithm": "ECDSA",
+  "curve": "SECP256R1",
+  "hash_algorithm": "SHA256",
+  "document_name": "Ringkasan_UAS_JTRIP.pdf",
+  "signed_pdf_filename": "signed_92921d98f6e247d59eae716765c2a47b.pdf",
+  "document_hash_hex": "028535cfc1c01ec51c702a7147a2e60448ed273790479f7d4ab2c7c29095e0c0",
+  "signature_b64": "MEUCIGoUbmu4o9tL/rajvqAeNOAxfeQ8Bnuyqc9EjvkjvfFyAiEA1iTlSZlmtEsbBqtK53D8KLKh1HipQEyRQ4Yi513w1dE=",
+  "created_at_utc": "2026-07-01T13:47:32.408525+00:00",
+  "expires_at_utc": "2026-07-31T13:47:32.408525+00:00",
+  "signer": {
+    "user_id": "773c810b4126429bb4525adcdd11f77c",
+    "username": "Lance",
+    "full_name": "Lance Perceval",
+    "nip": "3298483949349384"
+  }
+}

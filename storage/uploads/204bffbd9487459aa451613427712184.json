@@ -1,0 +1,18 @@
+{
+  "signature_id": "user_eda51a684c8240899c85fc14cd942b88",
+  "algorithm": "ECDSA",
+  "curve": "SECP256R1",
+  "hash_algorithm": "SHA256",
+  "document_name": "Ringkasan_UAS_JTRIP.pdf",
+  "signed_pdf_filename": "signed_6bcb0d2c4d72427f87d3b2bf33413ce7.pdf",
+  "document_hash_hex": "f8bf9ac713d3255ccef3c0990aca5bc9a356755475a6dbe9159b7128529c2aef",
+  "signature_b64": "MEYCIQCSO2BfCd7SzRKFH6NQwU+VNTl6KG3QMQHR9MYaZHD53AIhAOf+cLhEiWC11B8IngAzSnDom6YT8492V+J5gao9xmwf",
+  "created_at_utc": "2026-07-02T14:02:23.059079+00:00",
+  "expires_at_utc": "2029-07-01T14:02:23.059079+00:00",
+  "signer": {
+    "user_id": "eda51a684c8240899c85fc14cd942b88",
+    "username": "TI GANK",
+    "full_name": "TI GANK",
+    "nip": "001"
+  }
+}

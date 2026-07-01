@@ -1,30 +1,8 @@
-# TODO - ECDSA Signing + QR Verification Upgrade
-
-- [x] 1. Refactor backend data model untuk user account + session auth sederhana
-- [x] 2. Implement register/login/logout endpoint
-- [x] 3. Generate keypair otomatis saat registrasi user dan simpan terhubung akun
-- [x] 4. Update sign endpoint agar memakai private key milik user login
-- [x] 5. Simpan metadata signer (nama, NIP, user_id) ke signature payload
-- [x] 6. Tambah QR payload generation dari data signature
-- [x] 7. Tambah endpoint verifikasi QR payload terhadap data signature tersimpan
-- [x] 8. Redesign UI modern elegan (auth + sign + verify + QR verify)
-- [x] 9. Update frontend JS untuk alur auth, sign, verify, QR verify
-- [x] 10. Jalankan pengujian critical-path
-- [x] 11. Perbaiki bug dari hasil pengujian
-- [ ] 12. Tambah fitur masa berlaku (expired) pada signature & QR verify
-- [ ] 13. Jalankan pengujian ulang untuk skenario expired
-- [ ] 14. Finalisasi dokumentasi singkat perubahan
-- [x] 15. Tambah UI drag-and-drop posisi QR pada dokumen sebelum sign
-- [x] 16. Kirim koordinat posisi QR dari frontend ke endpoint /api/sign
-- [x] 17. Ubah backend penempatan QR agar memakai koordinat dinamis (fallback default)
-- [ ] 18. Uji alur sign dengan posisi QR custom
-- [x] 19. Tambah preview PDF langsung untuk drag-drop QR pada halaman terakhir
-- [x] 20. Tampilkan overlay nama signer dan NIP pada area drag
-- [ ] 21. Uji integrasi preview PDF + drag-drop + hasil PDF final
-- [ ] 22. Fix mapping koordinat Y preview ke PDF agar posisi tempel sesuai
-- [ ] 23. Default overlay Nama+NIP dari user login saat preview/sign
-- [ ] 24. Kecilkan ukuran box QR preview untuk presisi drag lebih baik
-- [ ] 25. Kalibrasi ulang mapping skala preview ke PDF untuk akurasi posisi
-- [ ] 26. Ubah format blok QR signed vertikal sesuai template (lokasi/tanggal, jabatan, QR, nama, NIP)
-- [ ] 27. Sinkronkan tampilan preview overlay dengan format blok signed terbaru
-- [x] 28. Update format blok signed PDF: lokasi default Jimbaran, tanggal nama bulan Indonesia, center align, style Pembimbing Akademik
+- [x] Tambah helper format tanggal expired untuk hasil verify QR di frontend.
+- [x] Update output sukses verify QR agar menampilkan baris `Expired` di paling bawah.
+- [x] Pastikan fallback `Expired: -` jika data tidak tersedia.
+- [x] Verifikasi cepat perubahan kode pada `static/app.js`.
+- [x] Ubah masa expired signature/QR menjadi 3 tahun (1095 hari) di backend.
+- [x] Ubah mekanisme signature agar 1 akun hanya punya 1 signature_id dan 1 file signature aktif.
+- [x] Pastikan payload QR memakai signature_id tetap per akun.
+- [x] Verifikasi endpoint `/api/verify-qr` tetap membaca signature berdasarkan signature_id baru.

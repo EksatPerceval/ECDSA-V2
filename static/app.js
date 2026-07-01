@@ -67,6 +67,23 @@ function validateRequiredFile(file, label) {
   return null;
 }
 
+/**
+ * Format timestamp UTC ke string tanggal-waktu lokal Indonesia.
+ */
+function formatUtcToIndonesianDateTime(utcString) {
+  if (!utcString) return "-";
+  const parsed = new Date(utcString);
+  if (Number.isNaN(parsed.getTime())) return utcString;
+  return parsed.toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
 const registerForm = document.getElementById("register-form");
 const registerResult = document.getElementById("register-result");
 
@@ -670,9 +687,10 @@ verifyQrForm.addEventListener("submit", async (e) => {
     }
 
     if (data.valid) {
+      const expiresAt = formatUtcToIndonesianDateTime(data.data?.expires_at_utc);
       showResult(
         verifyQrResult,
-        `Status: VALID\n${data.reason}\nSigner: ${data.data?.stored_signer?.full_name || "-"} (${data.data?.stored_signer?.nip || "-"})`,
+        `Status: VALID\n${data.reason}\nSigner: ${data.data?.stored_signer?.full_name || "-"} (${data.data?.stored_signer?.nip || "-"})\nExpired: ${expiresAt}`,
         "success"
       );
     } else {
