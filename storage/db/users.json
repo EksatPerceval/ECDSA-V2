@@ -109,6 +109,16 @@
       "private_key_path": "c:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_eda51a684c8240899c85fc14cd942b88_private_20260701140021.pem",
       "public_key_path": "c:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_eda51a684c8240899c85fc14cd942b88_public_20260701140021.pem",
       "created_at_utc": "2026-07-01T14:00:21.797890+00:00"
+    },
+    {
+      "id": "74a141c9a93b409bb9808da4d5a4dfe5",
+      "username": "cp_3b3fdce7",
+      "password_hash": "scrypt:32768:8:1$deNVeJBCme1iTTjT$d11cb36cac7699c4647bb02a1e5c5b323be51d45ce7349653827387c936bbe4fdf1726efdf50c0bd976045073e3b90d429630d69eae8432166e280f609bf9853",
+      "full_name": "CP User",
+      "nip": "123",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_74a141c9a93b409bb9808da4d5a4dfe5_private_20260701143107.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_74a141c9a93b409bb9808da4d5a4dfe5_public_20260701143107.pem",
+      "created_at_utc": "2026-07-01T14:31:07.914910+00:00"
     }
   ]
 }

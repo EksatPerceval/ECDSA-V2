@@ -92,7 +92,6 @@ const loginResult = document.getElementById("login-result");
 
 const sessionState = document.getElementById("session-state");
 const sessionResult = document.getElementById("session-result");
-const btnDownloadPrivate = document.getElementById("btn-download-private");
 const btnDownloadPublic = document.getElementById("btn-download-public");
 const btnLogout = document.getElementById("btn-logout");
 
@@ -315,14 +314,12 @@ function getQrPlacementPayload() {
 function setAuthUI(user) {
   if (!user) {
     sessionState.textContent = "Belum login.";
-    btnDownloadPrivate.classList.add("hidden");
     btnDownloadPublic.classList.add("hidden");
     btnLogout.classList.add("hidden");
     return;
   }
 
   sessionState.textContent = `Login sebagai: ${user.full_name} (${user.username}) · NIP: ${user.nip}`;
-  btnDownloadPrivate.classList.remove("hidden");
   btnDownloadPublic.classList.remove("hidden");
   btnLogout.classList.remove("hidden");
 }
@@ -455,9 +452,9 @@ function resetAllUserInputsAndOutputs() {
 }
 
 /**
- * Mengunduh private/public key milik user login dari endpoint /api/my-keys.
+ * Mengunduh public key milik user login dari endpoint /api/my-keys.
  */
-async function downloadMyKeys(which) {
+async function downloadMyPublicKey() {
   clearResult(sessionResult);
 
   try {
@@ -469,12 +466,6 @@ async function downloadMyKeys(which) {
       return;
     }
 
-    if (which === "private") {
-      downloadBlob(data.private_key.filename, data.private_key.content, "application/x-pem-file");
-      showResult(sessionResult, "Private key berhasil diunduh.", "success");
-      return;
-    }
-
     downloadBlob(data.public_key.filename, data.public_key.content, "application/x-pem-file");
     showResult(sessionResult, "Public key berhasil diunduh.", "success");
   } catch (_e) {
@@ -482,8 +473,7 @@ async function downloadMyKeys(which) {
   }
 }
 
-btnDownloadPrivate.addEventListener("click", () => downloadMyKeys("private"));
-btnDownloadPublic.addEventListener("click", () => downloadMyKeys("public"));
+btnDownloadPublic.addEventListener("click", downloadMyPublicKey);
 
 btnLogout.addEventListener("click", async () => {
   clearResult(sessionResult);

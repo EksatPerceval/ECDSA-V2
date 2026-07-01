@@ -1,8 +1,6 @@
-- [x] Tambah helper format tanggal expired untuk hasil verify QR di frontend.
-- [x] Update output sukses verify QR agar menampilkan baris `Expired` di paling bawah.
-- [x] Pastikan fallback `Expired: -` jika data tidak tersedia.
-- [x] Verifikasi cepat perubahan kode pada `static/app.js`.
-- [x] Ubah masa expired signature/QR menjadi 3 tahun (1095 hari) di backend.
-- [x] Ubah mekanisme signature agar 1 akun hanya punya 1 signature_id dan 1 file signature aktif.
-- [x] Pastikan payload QR memakai signature_id tetap per akun.
-- [x] Verifikasi endpoint `/api/verify-qr` tetap membaca signature berdasarkan signature_id baru.
+- [x] Update backend `app.py` to remove private key from `/api/my-keys` response.
+- [x] Update backend `app.py` to remove private key from `/api/generate-keys` response.
+- [x] Update frontend `templates/index.html` to remove "Download Private Key" button.
+- [x] Update frontend `static/app.js` to remove private-key download logic and keep public-key flow.
+- [x] Run critical-path verification for `/api/my-keys` and `/api/generate-keys` responses.
+- [x] Update TODO.md with completion status.

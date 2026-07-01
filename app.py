@@ -423,23 +423,18 @@ def me():
 
 
 @app.route("/api/my-keys", methods=["GET"])
-# Endpoint mengambil private/public key milik user yang sedang login.
+# Endpoint mengambil public key milik user yang sedang login.
 def my_keys():
     user = ensure_logged_in()
     if not user:
         return error_response("Harus login terlebih dahulu.", 401)
 
     try:
-        private_key_pem = read_file_bytes(user["private_key_path"]).decode("utf-8")
         public_key_pem = read_file_bytes(user["public_key_path"]).decode("utf-8")
 
         return jsonify(
             {
                 "ok": True,
-                "private_key": {
-                    "filename": os.path.basename(user["private_key_path"]),
-                    "content": private_key_pem,
-                },
                 "public_key": {
                     "filename": os.path.basename(user["public_key_path"]),
                     "content": public_key_pem,
@@ -447,7 +442,7 @@ def my_keys():
             }
         )
     except Exception:
-        return error_response("Gagal mengambil key milik user.", 500)
+        return error_response("Gagal mengambil public key milik user.", 500)
 
 
 @app.route("/api/generate-keys", methods=["POST"])
@@ -484,10 +479,6 @@ def generate_keys():
             {
                 "ok": True,
                 "message": "Keypair berhasil dibuat.",
-                "private_key": {
-                    "filename": private_name,
-                    "content": private_pem.decode("utf-8"),
-                },
                 "public_key": {
                     "filename": public_name,
                     "content": public_pem.decode("utf-8"),
