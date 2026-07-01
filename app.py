@@ -121,6 +121,7 @@ def save_users_db(db_data):
         json.dump(db_data, f, ensure_ascii=False, indent=2)
 
 
+# Mencari user berdasarkan username dari database JSON.
 def find_user_by_username(username: str):
     db = load_users_db()
     for user in db.get("users", []):
@@ -129,6 +130,7 @@ def find_user_by_username(username: str):
     return None
 
 
+# Mencari user berdasarkan id dari database JSON.
 def find_user_by_id(user_id: str):
     db = load_users_db()
     for user in db.get("users", []):
@@ -137,6 +139,7 @@ def find_user_by_id(user_id: str):
     return None
 
 
+# Memastikan user sudah login melalui session, mengembalikan objek user bila valid.
 def ensure_logged_in():
     uid = session.get("user_id")
     if not uid:
@@ -144,6 +147,7 @@ def ensure_logged_in():
     return find_user_by_id(uid)
 
 
+# Parsing string ISO datetime ke UTC-aware datetime.
 def parse_iso_utc(dt_str: str):
     if not dt_str:
         return None
@@ -154,6 +158,7 @@ def parse_iso_utc(dt_str: str):
     return parsed.astimezone(timezone.utc)
 
 
+# Mengecek apakah signature sudah expired berdasarkan waktu UTC.
 def is_signature_expired(expires_at_utc: str):
     if not expires_at_utc:
         return False, None
@@ -162,6 +167,7 @@ def is_signature_expired(expires_at_utc: str):
     return now_dt > expires_dt, expires_dt
 
 
+# Membuat data URI QR dari payload dictionary (format PNG base64).
 def create_qr_data_uri(payload_dict):
     payload_json = json.dumps(payload_dict, ensure_ascii=False, separators=(",", ":"))
     qr_img = qrcode.make(payload_json)
@@ -170,6 +176,7 @@ def create_qr_data_uri(payload_dict):
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("utf-8")
 
 
+# Membuat bytes PNG QR dari payload dictionary.
 def create_qr_png_bytes(payload_dict) -> bytes:
     payload_json = json.dumps(payload_dict, ensure_ascii=False, separators=(",", ":"))
     qr_img = qrcode.make(payload_json)
@@ -178,6 +185,7 @@ def create_qr_png_bytes(payload_dict) -> bytes:
     return buf.getvalue()
 
 
+# Parsing nilai rasio dan memastikan nilainya berada di rentang 0..1.
 def parse_ratio(value, default_value):
     try:
         parsed = float(value)
@@ -190,6 +198,7 @@ def parse_ratio(value, default_value):
         return default_value
 
 
+# Mengubah objek tanggal/datetime ke format tanggal Indonesia: "1 Juli 2026".
 def format_indonesian_date(dt_obj) -> str:
     if isinstance(dt_obj, datetime):
         d = dt_obj.date()
@@ -205,6 +214,7 @@ def format_indonesian_date(dt_obj) -> str:
     return f"{d.day} {bulan_id[d.month - 1]} {d.year}"
 
 
+# Menempelkan blok tanda tangan (lokasi/tanggal, jabatan, QR, nama, NIP) pada halaman terakhir PDF.
 def build_signed_pdf_with_qr_and_name(
     src_pdf_path: str,
     qr_png_bytes: bytes,
@@ -291,6 +301,7 @@ def build_signed_pdf_with_qr_and_name(
 
 
 @app.route("/api/register", methods=["POST"])
+# Endpoint registrasi user baru + pembuatan keypair ECDSA per akun.
 def register():
     try:
         payload = request.get_json(silent=True) or {}
@@ -357,6 +368,7 @@ def register():
 
 
 @app.route("/api/login", methods=["POST"])
+# Endpoint login user menggunakan username/password.
 def login():
     payload = request.get_json(silent=True) or {}
     username = (payload.get("username") or "").strip()
@@ -384,12 +396,14 @@ def login():
 
 
 @app.route("/api/logout", methods=["POST"])
+# Endpoint logout untuk menghapus session login user.
 def logout():
     session.clear()
     return jsonify({"ok": True, "message": "Logout berhasil."})
 
 
 @app.route("/api/me", methods=["GET"])
+# Endpoint mengecek status autentikasi user saat ini.
 def me():
     user = ensure_logged_in()
     if not user:
@@ -409,6 +423,7 @@ def me():
 
 
 @app.route("/api/my-keys", methods=["GET"])
+# Endpoint mengambil private/public key milik user yang sedang login.
 def my_keys():
     user = ensure_logged_in()
     if not user:
@@ -485,6 +500,7 @@ def generate_keys():
 
 @app.route("/api/sign", methods=["POST"])
 # Menandatangani hash PDF menggunakan private key user login, menyimpan signature, dan menyiapkan QR.
+# Endpoint sign PDF: membuat QR, menyisipkan blok tanda tangan, lalu sign hash PDF dengan ECDSA.
 def sign_pdf():
     user = ensure_logged_in()
     if not user:
@@ -721,6 +737,7 @@ def verify_pdf():
 
 
 @app.route("/api/verify-qr", methods=["POST"])
+# Endpoint verifikasi payload QR terhadap signature yang tersimpan.
 def verify_qr():
     try:
         payload = request.get_json(silent=True) or {}

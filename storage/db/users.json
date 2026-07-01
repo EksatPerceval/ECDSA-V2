@@ -89,6 +89,16 @@
       "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_e04791209d9948ad9b06f90b16710fb4_private_20260625192556.pem",
       "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_e04791209d9948ad9b06f90b16710fb4_public_20260625192556.pem",
       "created_at_utc": "2026-06-25T19:25:56.262017+00:00"
+    },
+    {
+      "id": "773c810b4126429bb4525adcdd11f77c",
+      "username": "Lance",
+      "password_hash": "scrypt:32768:8:1$3OKkFxl3I5Yhbb5B$4dd4bd0fcd14bd6994eb9257e483a8efbc8a30eb724e98f4558677b0634a78a95012131bddef4982072bbd65b8a8bad6ce26c7ae3ed4500c87c63eb30c11ccee",
+      "full_name": "Lance Perceval",
+      "nip": "3298483949349384",
+      "private_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_773c810b4126429bb4525adcdd11f77c_private_20260701115109.pem",
+      "public_key_path": "C:\\Users\\putue\\Downloads\\ECDSA\\storage\\keys\\user_773c810b4126429bb4525adcdd11f77c_public_20260701115109.pem",
+      "created_at_utc": "2026-07-01T11:51:09.674967+00:00"
     }
   ]
 }

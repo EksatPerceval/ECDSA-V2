@@ -30,6 +30,9 @@ function downloadBlob(filename, content, mimeType = "text/plain") {
   URL.revokeObjectURL(url);
 }
 
+/**
+ * Mengubah konten base64 menjadi Blob lalu memicu download file.
+ */
 function downloadBase64Blob(filename, base64Content, mimeType = "application/octet-stream") {
   const binary = atob(base64Content);
   const len = binary.length;
@@ -103,10 +106,16 @@ const qrPlacementState = {
   signerNip: "",
 };
 
+/**
+ * Membatasi nilai angka agar tetap berada di rentang min..max.
+ */
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
+/**
+ * Menyinkronkan teks nama + NIP pada box drag QR sesuai state signer aktif.
+ */
 function syncSignerOverlayText() {
   if (!qrDragBoxText) return;
   const finalName = (qrPlacementState.signerName || "").trim() || "Nama Signer";
@@ -114,6 +123,9 @@ function syncSignerOverlayText() {
   qrDragBoxText.textContent = `${finalName} · ${finalNip}`;
 }
 
+/**
+ * Mengambil dimensi area preview PDF yang dipakai untuk kalkulasi posisi QR.
+ */
 function getPreviewBounds() {
   if (!pdfPreviewCanvas) return { width: 1, height: 1 };
   return {
@@ -122,6 +134,9 @@ function getPreviewBounds() {
   };
 }
 
+/**
+ * Menerapkan posisi QR box ke canvas preview berdasarkan rasio x/y saat ini.
+ */
 function applyQrDragPositionByRatio() {
   if (!qrDragBox || !pdfPreviewCanvas) return;
   const boxW = qrDragBox.offsetWidth || 96;
@@ -135,6 +150,9 @@ function applyQrDragPositionByRatio() {
   qrDragBox.style.top = `${top}px`;
 }
 
+/**
+ * Mengupdate rasio x/y dari posisi pixel hasil drag-drop QR box.
+ */
 function updateQrRatioFromPixel(leftPx, topPx) {
   if (!qrDragBox || !pdfPreviewCanvas) return;
   const boxW = qrDragBox.offsetWidth || 96;
@@ -146,6 +164,9 @@ function updateQrRatioFromPixel(leftPx, topPx) {
   qrPlacementState.yRatio = clamp(topPx / maxY, 0, 1);
 }
 
+/**
+ * Merender halaman terakhir PDF ke canvas untuk preview penempatan QR.
+ */
 async function renderPdfPreview(file) {
   if (!file || !pdfPreviewCanvas || !pdfPreviewStage || !pdfPreviewEmpty) return;
 
@@ -202,6 +223,9 @@ async function renderPdfPreview(file) {
   }
 }
 
+/**
+ * Inisialisasi interaksi drag-drop QR box pada canvas preview PDF.
+ */
 function initQrDragDrop() {
   if (!qrDragBox || !pdfPreviewCanvas) return;
 
@@ -253,6 +277,9 @@ function initQrDragDrop() {
   syncSignerOverlayText();
 }
 
+/**
+ * Menyusun payload posisi QR + signer untuk dikirim ke endpoint sign.
+ */
 function getQrPlacementPayload() {
   return {
     x_ratio: qrPlacementState.xRatio,
@@ -265,6 +292,9 @@ function getQrPlacementPayload() {
 }
 
 
+/**
+ * Mengatur tampilan UI berdasarkan status autentikasi user.
+ */
 function setAuthUI(user) {
   if (!user) {
     sessionState.textContent = "Belum login.";
@@ -281,6 +311,9 @@ function setAuthUI(user) {
 }
 
 
+/**
+ * Mengecek session login aktif dari backend lalu sinkronkan state UI/frontend.
+ */
 async function checkSession() {
   clearResult(sessionResult);
 
@@ -383,6 +416,9 @@ loginForm.addEventListener("submit", async (e) => {
 });
 
 
+/**
+ * Mereset semua form/input/result UI setelah logout.
+ */
 function resetAllUserInputsAndOutputs() {
   registerForm.reset();
   loginForm.reset();
@@ -401,6 +437,9 @@ function resetAllUserInputsAndOutputs() {
   qrPreview.classList.add("hidden");
 }
 
+/**
+ * Mengunduh private/public key milik user login dari endpoint /api/my-keys.
+ */
 async function downloadMyKeys(which) {
   clearResult(sessionResult);
 
@@ -593,6 +632,12 @@ verifyForm.addEventListener("submit", async (e) => {
   }
 });
 
+/**
+ * Handler submit verify QR:
+ * - Validasi payload JSON QR
+ * - Kirim ke endpoint /api/verify-qr
+ * - Tampilkan status valid/invalid signer
+ */
 verifyQrForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearResult(verifyQrResult);
